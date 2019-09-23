@@ -14,10 +14,14 @@ const Todo = todo => {
 
   return (
     <div className="todo">
-      <input type="checkbox" checked={done || false} onChange={toggleTodo} />
-      <span className={done ? "done" : ""} onClick={toggleTodo}>
-        {content}
-      </span>
+      <p className={done ? "done" : ""} onClick={toggleTodo}>
+        {done ?
+          <i className="far fa-check-square" />
+          :
+          <i className="far fa-square" />
+        }
+        <span>{content}</span>
+      </p>
 
       <button onClick={() => todo.onRemove()} title="remove" className="remove">
         <i className="fas fa-trash-alt" />
