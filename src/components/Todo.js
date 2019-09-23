@@ -20,7 +20,7 @@ const Todo = todo => {
       </span>
 
       <button onClick={() => todo.onRemove()} title="remove" className="remove">
-        <i className="fa fa-trash" />
+        <i className="fas fa-trash-alt" />
       </button>
     </div>
   );
