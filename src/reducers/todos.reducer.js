@@ -24,6 +24,16 @@ export const todosReducer = (state, action) => {
       });
 
       return [...newTodos];
+    case "edit-todo":
+      const editedTodos = state.map(todo => {
+        if (todo.id === action.id) {
+          todo.content = action.content;
+        }
+
+        return todo;
+      });
+
+      return [...editedTodos];
     default:
       throw new Error();
   }
