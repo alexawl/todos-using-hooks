@@ -36,7 +36,7 @@
   margin-right: 5px;
 }
 
-.todo .remove {
+.todo .remove, .edit {
   margin-left: 5px;
   background: none;
   border: none;

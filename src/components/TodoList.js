@@ -24,6 +24,7 @@ const TodoList = () => {
               key={todo.id}
               onToggle={() => dispatch({ type: "toggle-todo", id: todo.id })}
               onRemove={() => dispatch({ type: "remove-todo", id: todo.id })}
+              onEdit={content => dispatch({ type: "edit-todo", id: todo.id, content })}
             />
           ))
         ) : (
