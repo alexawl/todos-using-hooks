@@ -1,11 +1,20 @@
-import { genId } from "../util";
+import {genId} from "../util";
 
 export const todosReducer = (state, action) => {
   switch (action.type) {
-    case "remove-todo":
-      const filtered = state.filter(todo => todo.id !== action.id);
+    case "edit-todo":
+      return state.map(todo => {
+        if (todo.id === action.id) {
+          return {
+            ...todo,
+            content: action.newContent
+          }
+        }
 
-      return [...filtered];
+        return todo;
+      });
+    case "remove-todo":
+      return state.filter(todo => todo.id !== action.id);
     case "add-todo":
       const newTodo = {
         id: genId(state),
@@ -15,16 +24,20 @@ export const todosReducer = (state, action) => {
 
       return [...state, newTodo];
     case "toggle-todo":
-      const newTodos = state.map(todo => {
+      return state.map(todo => {
         if (todo.id === action.id) {
-          todo.done = !todo.done;
+          // You need to create a new object spreading the old element if you wanna avoid mutations
+          return {
+            ...todo,
+            done: !todo.done
+          }
         }
 
         return todo;
       });
-
-      return [...newTodos];
     default:
-      throw new Error();
+      return state;
+    // Throwing an error will make the app crashing, so is not a good practice
+    // throw new Error();
   }
 };

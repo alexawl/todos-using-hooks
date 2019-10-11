@@ -1,31 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-const Todo = todo => {
-  const [{ done, content }, setTodo] = useState(todo);
+const ItemToggle = ({done, toggleTodo}) => {
+  const icon = done ? "fa-check-square" : "fa-square";
 
-  const toggleTodo = () => {
-    setTodo(prev => {
-      const newTodo = { content: prev.content, done: !prev.done, id: prev.id };
-      return newTodo;
-    });
-    todo.onToggle();
-  };
+  return <i className={`far ${icon}`} onClick={toggleTodo}/>
+};
 
+const ItemContent = ({content, done, onChange}) => {
+  const className = done ? "done" : "";
+
+  return <input
+    className={className}
+    value={content}
+    onChange={({target}) => onChange(target.value)}
+  />
+};
+
+const ItemRemove = ({onRemove}) => {
+  return <i className="fas fa-trash-alt remove" onClick={onRemove} title="remove"/>
+};
+
+const Todo = ({done, content, onToggle, onRemove, onEdit}) => {
   return (
     <div className="todo">
-      <p className={done ? "done" : ""} onClick={toggleTodo}>
-        {done ?
-          <i className="far fa-check-square" />
-          :
-          <i className="far fa-square" />
-        }
-        <span>{content}</span>
-      </p>
+      <ItemToggle done={done} toggleTodo={onToggle}/>
 
-      <button onClick={() => todo.onRemove()} title="remove" className="remove">
-        <i className="fas fa-trash-alt" />
-      </button>
+      <ItemContent
+        content={content}
+        done={done}
+        toggleTodo={onToggle}
+        onChange={onEdit}
+      />
+
+      <ItemRemove onRemove={onRemove}/>
     </div>
   );
 };
