@@ -1,11 +1,20 @@
-import { genId } from "../util";
+import {genId} from "../util";
 
 export const todosReducer = (state, action) => {
   switch (action.type) {
-    case "remove-todo":
-      const filtered = state.filter(todo => todo.id !== action.id);
+    case "edit-todo":
+      return state.map(todo => {
+        if (todo.id === action.id) {
+          return {
+            ...todo,
+            content: action.newContent
+          }
+        }
 
-      return [...filtered];
+        return todo;
+      });
+    case "remove-todo":
+      return state.filter(todo => todo.id !== action.id);
     case "add-todo":
       const newTodo = {
         id: genId(state),
@@ -15,26 +24,18 @@ export const todosReducer = (state, action) => {
 
       return [...state, newTodo];
     case "toggle-todo":
-      const newTodos = state.map(todo => {
+      return state.map(todo => {
         if (todo.id === action.id) {
-          todo.done = !todo.done;
+          // Create a new object spreading the old element to avoid mutations
+          return {
+            ...todo,
+            done: !todo.done
+          }
         }
 
         return todo;
       });
-
-      return [...newTodos];
-    case "edit-todo":
-      const editedTodos = state.map(todo => {
-        if (todo.id === action.id) {
-          todo.content = action.content;
-        }
-
-        return todo;
-      });
-
-      return [...editedTodos];
     default:
-      throw new Error();
+      return state;
   }
 };

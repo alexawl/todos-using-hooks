@@ -8,7 +8,10 @@ import { saveTodos, loadTodos } from "../util";
 const TodoList = () => {
   const [todos, dispatch] = useReducer(todosReducer, loadTodos());
 
-  useEffect(() => saveTodos(todos));
+  useEffect(
+    () => saveTodos(todos),
+    [todos]
+  );
 
   return (
     <div className="todos-container">
@@ -16,15 +19,15 @@ const TodoList = () => {
 
       <div className="todo-list">
         {todos.length ? (
-          todos.map(todo => (
+          todos.map(({id, done, content}) => (
             <Todo
-              done={todo.done}
-              content={todo.content}
-              id={todo.id}
-              key={todo.id}
-              onToggle={() => dispatch({ type: "toggle-todo", id: todo.id })}
-              onRemove={() => dispatch({ type: "remove-todo", id: todo.id })}
-              onEdit={content => dispatch({ type: "edit-todo", id: todo.id, content })}
+              done={done}
+              content={content}
+              key={id}
+              id={id}
+              onToggle={() => dispatch({ type: "toggle-todo", id })}
+              onRemove={() => dispatch({ type: "remove-todo", id })}
+              onEdit={newContent => dispatch({ type: "edit-todo", id, newContent })}
             />
           ))
         ) : (

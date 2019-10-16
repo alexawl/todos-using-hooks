@@ -1,63 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-const Todo = todo => {
-  const [{ done, content }, setTodo] = useState(todo);
-  const [editMode, setEditMode] = useState(false);
-  const [editContent, setEditContent] = useState("");
+const ItemToggle = ({done, toggleTodo}) => {
+  const icon = done ? "fa-check-square" : "fa-square";
 
-  const toggleTodo = () => {
-    setTodo(prev => {
-      const newTodo = { content: prev.content, done: !prev.done, id: prev.id };
-      return newTodo;
-    });
-    todo.onToggle();
-  };
+  return <i className={`far ${icon}`} onClick={toggleTodo}/>
+};
 
-  const editTodo = () => {
-    setEditMode(true);
-    setEditContent(content)
-  }
+const ItemContent = ({content, done, onChange}) => {
+  const className = done ? "done" : "";
 
-  const saveTodo = e => {
-    e.preventDefault();
-    if (editContent.length) {
-      setEditMode(false);
-      setTodo(prev => {
-        const newTodo = { content: editContent, done: prev.done, id: prev.id };
-        return newTodo;
-      });
-      todo.onEdit(editContent);
-    }
-  }
+  return <input
+    className={className}
+    value={content}
+    onChange={({target}) => onChange(target.value)}
+  />
+};
 
+const ItemRemove = ({onRemove}) => {
+  return <i className="fas fa-trash-alt remove" onClick={onRemove} title="remove"/>
+};
+
+const Todo = ({done, content, onToggle, onRemove, onEdit}) => {
   return (
     <div className="todo">
-      {editMode ?
-          <form onSubmit={e => saveTodo(e)}>
-            <input
-              type="text"
-              value={editContent}
-              onChange={({ target }) => setEditContent(target.value)}
-            />
-          </form>
-          :
-          <p className={done ? "done" : ""} onClick={toggleTodo}>
-            {done ?
-              <i className="far fa-check-square" />
-              :
-              <i className="far fa-square" />
-            }
-            <span>{content}</span> 
-          </p>
-      }
+      <ItemToggle done={done} toggleTodo={onToggle}/>
 
-      <button onClick={() => editTodo()} title="edit" className="edit">
-        <i className="fas fa-pencil-alt" />
-      </button>
-      <button onClick={() => todo.onRemove()} title="remove" className="remove">
-        <i className="fas fa-trash-alt" />
-      </button>
+      <ItemContent
+        content={content}
+        done={done}
+        toggleTodo={onToggle}
+        onChange={onEdit}
+      />
+
+      <ItemRemove onRemove={onRemove}/>
     </div>
   );
 };

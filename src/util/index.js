@@ -1,8 +1,10 @@
+// You are not using todos right now
 export const genId = todos => {
   const randomInt = () => Math.floor(Math.random() * 100);
 
   let id = randomInt();
 
+  // TODO You need to add it here
   while (existTodo(id)) id = randomInt();
 
   return id;
