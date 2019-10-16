@@ -26,7 +26,7 @@ export const todosReducer = (state, action) => {
     case "toggle-todo":
       return state.map(todo => {
         if (todo.id === action.id) {
-          // You need to create a new object spreading the old element if you wanna avoid mutations
+          // Create a new object spreading the old element to avoid mutations
           return {
             ...todo,
             done: !todo.done
@@ -37,7 +37,5 @@ export const todosReducer = (state, action) => {
       });
     default:
       return state;
-    // Throwing an error will make the app crashing, so is not a good practice
-    // throw new Error();
   }
 };

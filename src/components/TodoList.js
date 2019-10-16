@@ -8,8 +8,6 @@ import { saveTodos, loadTodos } from "../util";
 const TodoList = () => {
   const [todos, dispatch] = useReducer(todosReducer, loadTodos());
 
-  // Avoid the usage of useEffect without the dependencies list otherwise
-  // it will run this function every time that will be re-rendered
   useEffect(
     () => saveTodos(todos),
     [todos]
